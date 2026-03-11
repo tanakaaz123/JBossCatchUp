@@ -13,25 +13,52 @@
 
         <table class="table-auto border-collapse border border-gray-400">
             <tr class="bg-gray-200">
+                <th>Delete</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Age</th>
                 <th>Address</th>
             </tr>
-
             <tr th:each="emp : ${employees}">
+                <td><input type="checkbox" name="selectedEmployeeIds" th:value="${emp.id}"></td>
                 <td th:text="${emp.id}"></td>
                 <td th:text="${emp.name}"></td>
                 <td th:text="${emp.age}"></td>
                 <td th:text="${emp.address}"></td>
             </tr>
         </table>
-
-        <button class="mt-6 rounded bg-green-500 px-4 py-2 text-white">
-            <a th:href="@{/employee/create}">Create</a>
-        </button>
+        <div class="flex items-center justify-center mt-6">
+            <button class="mt-6 rounded bg-green-500 px-4 py-2 text-white">
+                <a th:href="@{/employee/create}">Create</a>
+            </button>
+            <button id="deleteButton" class="ml-4 mt-6 rounded bg-red-500 px-4 py-2 text-white">
+                Delete</button>
+        </div>
     </div>
 
 </body>
+<!-- 一括削除のためのスクリプト -->
+<script th:inline="javascript">
+    const deleteButton = document.getElementById('deleteButton');
+    const deleteUrl = /*[[@{/employee/delete}]]*/ '/employee/delete';
+    deleteButton.addEventListener("click", function () {
+        const checkedBoxes = document.querySelectorAll('input[name="selectedEmployeeIds"]:checked');
+        const deleteEmployeeIds = Array.from(checkedBoxes, checkbox => Number(checkbox.value));
+        fetch(deleteUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ deleteEmployeeIds: deleteEmployeeIds })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Delete failed');
+            }
+            window.location.reload();
+        }).catch(() => {
+            alert('削除に失敗しました');
+        })
+    })
+</script>
 
 </html>

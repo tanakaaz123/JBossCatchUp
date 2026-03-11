@@ -4,8 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import task2.app.request.CreateEmployeeRequest;
+import task2.app.request.DeleteEmployeeRequest;
 import task2.app.service.EmployeeService;
 
 @Controller
@@ -28,9 +30,18 @@ public class EmployeeController {
         return "/employee/create";
     }
 
+    // 従業員登録のエンドポイント
     @PostMapping("/employee/create")
-    public String employeeCreate(CreateEmployeeRequest employee) {
-        employeeService.create(employee);
+    public String employeeCreate(CreateEmployeeRequest request) {
+        employeeService.create(request);
+        return "redirect:/employee/list";
+    }
+
+    // 一括削除のエンドポイント
+    @PostMapping("/employee/delete")
+    // @RequestBodyを使用して、JSONのリクエストボディからDeleteEmployeeRequestオブジェクトを受け取る
+    public String employeeDelete(@RequestBody DeleteEmployeeRequest request) {
+        employeeService.delete(request);
         return "redirect:/employee/list";
     }
 
