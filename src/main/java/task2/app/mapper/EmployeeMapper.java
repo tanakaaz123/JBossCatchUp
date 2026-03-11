@@ -19,4 +19,7 @@ public interface EmployeeMapper {
     // 従業員一括削除
     // ※@Paramを使用して、MyBatisのXMLファイルで使用するパラメータ名を指定する
     void delete(@Param("targetIds") List<Long> targetIds);
+
+    // 従業員一括更新
+    void update(@Param("updateTargetEmployees") List<EmployeeEntity> updateTargetEmployees);
 }

@@ -10,30 +10,52 @@
     <div class="flex min-h-screen flex-col items-center px-4 py-8">
 
         <h1 class="mb-6 text-2xl font-bold">Employee List</h1>
-
-        <table class="table-auto border-collapse border border-gray-400">
-            <tr class="bg-gray-200">
-                <th>Delete</th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Address</th>
-            </tr>
-            <tr th:each="emp : ${employees}">
-                <td><input type="checkbox" name="selectedEmployeeIds" th:value="${emp.id}"></td>
-                <td th:text="${emp.id}"></td>
-                <td th:text="${emp.name}"></td>
-                <td th:text="${emp.age}"></td>
-                <td th:text="${emp.address}"></td>
-            </tr>
-        </table>
-        <div class="flex items-center justify-center mt-6">
-            <button class="mt-6 rounded bg-green-500 px-4 py-2 text-white">
-                <a th:href="@{/employee/create}">Create</a>
-            </button>
-            <button id="deleteButton" class="ml-4 mt-6 rounded bg-red-500 px-4 py-2 text-white">
-                Delete</button>
-        </div>
+        <!-- 一括更新はthymeleafで行う -->
+        <form th:action="@{/employee/update}" method="post" class="w-full flex flex-col items-center">
+            <table class="table-auto border-collapse border border-gray-400">
+                <tr class="bg-gray-200">
+                    <th>Delete</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                </tr>
+                <!-- updateEmployees[__${stat.index}__].id は、リストで受け取るためのname -->
+                <tr th:each="emp, stat : ${employees}">
+                    <td>
+                        <!-- 削除用チェックボックス -->
+                        <input type="checkbox" name="selectedEmployeeIds" th:value="${emp.id}">
+                    </td>
+                    <td th:text="${emp.id}"></td>
+                    <!-- idは主キーの為、hiddenで指定 -->
+                    <input type="hidden" th:name="updateEmployees[__${stat.index}__].id" th:value="${emp.id}">
+                    <td>
+                        <!-- 名前 -->
+                        <input type="text" th:placeholder="${emp.name}"
+                            th:name="updateEmployees[__${stat.index}__].name">
+                    </td>
+                    <td>
+                        <!-- 年齢 -->
+                        <input type="number" th:placeholder="${emp.age}"
+                            th:name="updateEmployees[__${stat.index}__].age">
+                    </td>
+                    <td>
+                        <!-- 住所 -->
+                        <textarea th:placeholder="${emp.address}"
+                            th:name="updateEmployees[__${stat.index}__].address"></textarea>
+                    </Td>
+                </tr>
+            </table>
+            <div class="flex items-center justify-center mt-6">
+                <button class="mt-6 rounded bg-green-500 px-4 py-2 text-white">
+                    <a th:href="@{/employee/create}">Create⇒</a>
+                </button>
+                <button id="deleteButton" class="ml-4 mt-6 rounded bg-red-500 px-4 py-2 text-white">
+                    Delete</button>
+                <button type="submit" id="updateButton" class="ml-4 mt-6 rounded bg-red-500 px-4 py-2 text-white">
+                    Update</button>
+            </div>
+        </form>
     </div>
 
 </body>
