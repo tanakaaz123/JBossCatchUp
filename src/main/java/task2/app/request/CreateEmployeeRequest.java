@@ -1,21 +1,10 @@
-package task2.app.entity;
+package task2.app.request;
 
-// Entityクラス
-public class EmployeeEntity {
+public class CreateEmployeeRequest {
 
-    private Long id;
-    private String name;
-    private Integer age;
-    private String address;
-
-    // getter / setter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    String name;
+    Integer age;
+    String address;
 
     public String getName() {
         return name;
@@ -40,5 +29,4 @@ public class EmployeeEntity {
     public void setAddress(String address) {
         this.address = address;
     }
-
 }

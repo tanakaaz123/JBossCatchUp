@@ -12,4 +12,7 @@
         SELECT id, name, age, address FROM employee
     </select>
 
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee (name, age, address) VALUES (#{name}, #{age}, #{address})
+    </insert>
 </mapper>
