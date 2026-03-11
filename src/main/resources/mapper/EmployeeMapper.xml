@@ -12,7 +12,6 @@
         SELECT id, name, age, address FROM employee
     </select>
 
-    <!-- 従業員登録 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO employee (name, age, address) VALUES (#{name}, #{age}, #{address})
     </insert>
@@ -29,18 +28,4 @@
         </foreach>
     </delete>
 
-    <!-- foreachを用いて一括更新
-        collection = 更新対象の従業員リスト 
-        -->
-    <update id="update">
-        <foreach collection="updateTargetEmployees" item="emp" separator=";">
-            UPDATE employee
-            <set>
-                <if test="emp.name != null">name = #{emp.name},</if>
-                <if test="emp.age != null">age = #{emp.age},</if>
-                <if test="emp.address != null">address = #{emp.address}</if>
-            </set>
-            WHERE id = #{emp.id}
-        </foreach>
-    </update>
 </mapper>

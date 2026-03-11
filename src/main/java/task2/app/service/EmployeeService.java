@@ -1,6 +1,5 @@
 package task2.app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import task2.app.entity.EmployeeEntity;
 import task2.app.mapper.EmployeeMapper;
 import task2.app.request.CreateEmployeeRequest;
 import task2.app.request.DeleteEmployeeRequest;
-import task2.app.request.UpdateEmployeeRequest;
 
 @Service
 @Transactional
@@ -48,35 +46,4 @@ public class EmployeeService {
         }
         employeeMapper.delete(targetIds);
     }
-
-    // 一括更新
-    public void update(UpdateEmployeeRequest request) {
-        List<EmployeeEntity> updateTargetEmployees = request.getUpdateEmployees();
-
-        // inputが空欄だと空白になるのでnullに変換する処理
-        List<EmployeeEntity> normalizedEmployees = new ArrayList<>();
-        for (EmployeeEntity employee : updateTargetEmployees) {
-
-            employee.setName(normalizeBlankToNull(employee.getName()));
-            employee.setAddress(normalizeBlankToNull(employee.getAddress()));
-            // SQLのバグ対策。すべてNULLだと、SQLの構文エラーになるため、1件でも値が入っていれば更新処理を行う
-            if (employee.getName() == null && employee.getAge() == null && employee.getAddress() == null) {
-                continue;
-            }
-            normalizedEmployees.add(employee);
-        }
-        if (normalizedEmployees.isEmpty()) {
-            return;
-        }
-        employeeMapper.update(normalizedEmployees);
-    }
-
-    // 空白をnullに変換する処理
-    private String normalizeBlankToNull(String value) {
-        if (value == null || value.isBlank()) {
-            return null;
-        }
-        return value;
-    }
-
 }
