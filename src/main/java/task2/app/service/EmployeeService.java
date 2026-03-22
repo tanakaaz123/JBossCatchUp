@@ -59,10 +59,7 @@ public class EmployeeService {
 
             employee.setName(normalizeBlankToNull(employee.getName()));
             employee.setAddress(normalizeBlankToNull(employee.getAddress()));
-            // SQLのバグ対策。すべてNULLだと、SQLの構文エラーになるため、1件でも値が入っていれば更新処理を行う
-            if (employee.getName() == null && employee.getAge() == null && employee.getAddress() == null) {
-                continue;
-            }
+
             normalizedEmployees.add(employee);
         }
         if (normalizedEmployees.isEmpty()) {

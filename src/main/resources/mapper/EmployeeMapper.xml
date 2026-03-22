@@ -34,13 +34,15 @@
         -->
     <update id="update">
         <foreach collection="updateTargetEmployees" item="emp" separator=";">
-            UPDATE employee
-            <set>
-                <if test="emp.name != null">name = #{emp.name},</if>
-                <if test="emp.age != null">age = #{emp.age},</if>
-                <if test="emp.address != null">address = #{emp.address}</if>
-            </set>
-            WHERE id = #{emp.id}
+            <if test="emp.name != null or emp.age != null or emp.address != null">
+                UPDATE employee
+                <set>
+                    <if test="emp.name != null">name = #{emp.name},</if>
+                    <if test="emp.age != null">age = #{emp.age},</if>
+                    <if test="emp.address != null">address = #{emp.address}</if>
+                </set>
+                WHERE id = #{emp.id}
+            </if>
         </foreach>
     </update>
 </mapper>
